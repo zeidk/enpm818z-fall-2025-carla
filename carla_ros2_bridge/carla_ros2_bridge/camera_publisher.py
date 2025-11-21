@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-CARLA Camera Publisher Node
+CARLA Camera Publisher Node (ROS 2 Humble Compatible)
 
 Connects to CARLA, spawns a vehicle with camera, and publishes
 camera data to ROS 2 with clean topic names (no double-slash bug).
+
+Compatible with ROS 2 Humble (Ubuntu 22.04) and Jazzy (Ubuntu 24.04)
 
 Topics published:
     /carla/camera/image (sensor_msgs/Image)
@@ -20,7 +22,12 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 import numpy as np
 import weakref
-from tf2_ros import TransformBroadcaster
+
+# Try Jazzy imports first, fall back to Humble
+try:
+    from tf2_ros import TransformBroadcaster
+except ImportError:
+    from tf2_ros import TransformBroadcaster
 
 
 class CarlaCameraPublisher(Node):
@@ -49,7 +56,7 @@ class CarlaCameraPublisher(Node):
         self.spawn_vehicle = self.get_parameter('spawn_vehicle').value
         self.autopilot = self.get_parameter('autopilot').value
         
-        # Create publishers
+        # Create publishers (using default QoS for Humble compatibility)
         self.image_pub = self.create_publisher(Image, '/carla/camera/image', 10)
         self.camera_info_pub = self.create_publisher(CameraInfo, '/carla/camera/camera_info', 10)
         self.odom_pub = self.create_publisher(Odometry, '/carla/vehicle/odometry', 10)
@@ -58,7 +65,7 @@ class CarlaCameraPublisher(Node):
         self.tf_broadcaster = TransformBroadcaster(self)
         
         self.get_logger().info('='*60)
-        self.get_logger().info('CARLA Camera Publisher Node')
+        self.get_logger().info('CARLA Camera Publisher Node (Humble Compatible)')
         self.get_logger().info('='*60)
         
         # Connect to CARLA

@@ -3,8 +3,8 @@
 <package format="3">
   <name>carla_ros2_bridge</name>
   <version>1.0.0</version>
-  <description>ROS 2 bridge for CARLA Simulator - bypasses native ROS 2 double-slash bug</description>
-  <maintainer email="your.email@example.com">Your Name</maintainer>
+  <description>ROS 2 bridge for CARLA Simulator - bypasses native ROS 2 double-slash bug (Humble compatible)</description>
+  <maintainer email="zeidk@umd.edu">zeidk</maintainer>
   <license>MIT</license>
 
   <depend>rclpy</depend>
